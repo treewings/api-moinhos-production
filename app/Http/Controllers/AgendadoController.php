@@ -54,7 +54,7 @@ class AgendadoController extends Controller
       }
       
 
-        return response([], 200)->header('Retry-After', '3000');
+        return response([], 200);
      }
 
      public function pegarTarefa(Request $request, $id){
@@ -100,7 +100,7 @@ class AgendadoController extends Controller
         Moinhos::create([
           'acess_number' => $request->acess_number,
           'codigo_setor_exame' => $request->codigo_setor_exame,
-          'data' => $request->hora_pedidoX,
+          'data' => $request->data,
           'dados' => json_encode($request->dados) 
         ]);
 

@@ -17,30 +17,10 @@ class MoinhosController extends Controller
 {
     public function dados()
     {
-        $remove = Moinhos::all();
+        
 
-        foreach($remove as $dados){
-                $dados->delete();
-        }
-
-        $view = new ViewsMoinhos();
-        $view = $view->dados();
-    
-       while($dados = oci_fetch_assoc($view)){
-            $moinhos = Agendado::where('acess_number', $dados['acess_number'])->get();
-            $atendimento = Atendimento::where('acess_number', $dados['acess_number'])->get();
-            $posExame = Posexame::where('acess_number', $dados['acess_number'])->get();
-            $finalizado = Finalizado::where('acess_number', $dados['acess_number'])->get();
-
-            if(!isset($moinhos[0]) && !isset($atendimento[0]) && !isset($posExame[0]) && !isset($finalizado[0]) && $dados['sn_cancelado'] != 'S'){
-                Moinhos::create([
-                    'acess_number' => $dados['acess_number'],
-                    'codigo_setor_exame' => $dados['codigo_setor_exame'],
-                    'data' =>  $dados['hora_pedidoX'],
-                    'dados' => json_encode($dados)
-                ]);
-            }
-       }
+        $dataAtual = new DateTime();
+       
 
        $filtro = [];
        $umovCheca = [];
@@ -56,7 +36,6 @@ class MoinhosController extends Controller
 
 
        $Atualizado = [];
-       $dataAtual = new DateTime();
        foreach($moinhos as $dadosAtulizado){
             $setor = json_decode($dadosAtulizado->dados, true);
             $hora = $dataAtual->diff($dadosAtulizado->data);
@@ -289,6 +268,6 @@ class MoinhosController extends Controller
             'umovCheca' => $umovCheca
         ];
 
-        return response($arrayDados, 200)->header('Retry-After', '3000');
+        return response($arrayDados, 200);
     }
 }

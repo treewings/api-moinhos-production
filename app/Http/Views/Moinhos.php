@@ -18,10 +18,6 @@ class Moinhos
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
         }
 
-        $timeExec = oci_set_call_timeout($banco, 5000);
-        if(!$timeExec){     
-            echo 'passou do tempo limite';
-        }
 
         $variavelName = 'DD-MM-YYYY HH24:MI:SS';
         $variavelNameX = 'YYYY-MM-DD HH24:MI:SS';
@@ -75,6 +71,7 @@ class Moinhos
         oci_bind_by_name($stid, ':variavelNameX', $variavelNameX);
         oci_execute($stid);
 
+        oci_close($banco);
         return $stid;
     }
 }
