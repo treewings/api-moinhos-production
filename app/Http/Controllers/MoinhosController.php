@@ -8,8 +8,10 @@ use App\Models\Atendimento;
 use App\Models\Finalizado;
 use App\Models\Moinhos;
 use App\Models\Posexame;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Object_;
 
@@ -26,13 +28,27 @@ class MoinhosController extends Controller
        $umovCheca = [];
        $filtroSala = [];
 
+    //    $moinhos = Cache::remember('moinhosA',180, function () {
+    //     return Moinhos::orderBy('data', 'asc')->get();
+    //     });
+    //   $agendados = Cache::remember('agendadosA',180, function () {
+    //     return Agendado::orderByDesc('created_at')->get();
+    //     });
+    //   $atendimentos = Cache::remember('atendimentosA',180, function () {
+    //     return Atendimento::all();
+    //     });
+    //   $posexame = Cache::remember('posexameA',180, function () {
+    //     return Posexame::all();
+    //     });
+    //   $finalizado = Cache::remember('finalizadoA',180, function () {
+    //     return Finalizado::where('created_at', '>=', Carbon::now()->subHours(24))->get();
+    //     });
+       
        $moinhos = Moinhos::orderBy('data', 'asc')->get();
-       $agendados = Agendado::orderByDesc('created_at')->get();
+       $agendados =Agendado::orderByDesc('created_at')->get();
        $atendimentos = Atendimento::all();
        $posexame = Posexame::all();
-       $finalizado = Finalizado::all();
-       
-       
+       $finalizado = Finalizado::where('created_at', '>=', Carbon::now()->subHours(24))->get();
 
 
        $Atualizado = [];
@@ -268,6 +284,6 @@ class MoinhosController extends Controller
             'umovCheca' => $umovCheca
         ];
 
-        return response($arrayDados, 200);
+        return response($arrayDados, 200)->header('Content-Type', 'text/plain');
     }
 }

@@ -36,7 +36,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::get('/moinhos', [MoinhosController::class, 'dados']);
     Route::post('/moinhos/consulta', [FiltroController::class, 'consulta']);
-    Route::get('/moinhos/diferenca', [DiferencaMoinhosController::class, 'diferenca']);
+
+    // Route::get('/moinhos/diferenca', [DiferencaMoinhosController::class, 'diferenca']);
     
     Route::post('/moinhos/atualiza/agendado', [DiferencaMoinhosController::class, 'atualizaDados']);
     

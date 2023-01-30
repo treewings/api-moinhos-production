@@ -8,6 +8,7 @@ use App\Models\Atendimento;
 use App\Models\Finalizado;
 use App\Models\Moinhos;
 use App\Models\Posexame;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +40,7 @@ class FiltroController extends Controller
         $agendados = Agendado::where($consulta)->get();
         $atendimentos = Atendimento::where($consulta)->get();
         $posexame = Posexame::where($consulta)->get();
-        $finalizado = Finalizado::where($consulta)->get();
+        $finalizado = Finalizado::where($consulta)->where('created_at', '>=', Carbon::now()->subHours(24))->get();
         $filtro = [];
         $Atualizado = [];
         $dataAtual = new DateTime();
