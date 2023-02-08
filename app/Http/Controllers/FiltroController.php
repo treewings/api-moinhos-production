@@ -19,10 +19,28 @@ class FiltroController extends Controller
 
         $consulta = function ($query) use ($request)
         {
-            if($request->has('codigo_setor_exame')){
-                $query->where('codigo_setor_exame', $request->get('codigo_setor_exame'));
+            if($request->has('cod_tumografiaComputadorizada')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_tumografiaComputadorizada'));
             }
-
+            if($request->has('cod_raioX')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_raioX'));
+            }
+            if($request->has('cod_ecografiaGeral')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_ecografiaGeral'));
+            }
+            if($request->has('cod_ressonanciaMagnetica')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_ressonanciaMagnetica'));
+            }
+            if($request->has('cod_centroDaMulher')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_centroDaMulher'));
+            }
+            if($request->has('cod_igEcografiaGeral')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_igEcografiaGeral'));
+            }
+            if($request->has('cod_radiologiaPedriatrica')){
+                $query->orWhere('codigo_setor_exame', $request->get('cod_radiologiaPedriatrica'));
+            }
+          
             if($request->has('cod_sala')){
                 $query->where('cod_sala', $request->get('cod_sala'));
             }
@@ -32,7 +50,7 @@ class FiltroController extends Controller
         if($request->has('cod_sala')){
             $moinhos = Moinhos::orderBy('data', 'asc')->get();
         }
-        if($request->has('codigo_setor_exame')){
+        if($request->has('cod_tumografiaComputadorizada') || $request->has('cod_raioX') || $request->has('cod_ecografiaGeral') || $request->has('cod_ressonanciaMagnetica') || $request->has('cod_centroDaMulher') || $request->has('cod_igEcografiaGeral') || $request->has('cod_radiologiaPedriatrica')){
             $moinhos = Moinhos::orderBy('data', 'asc')->where($consulta)->get();
         }
         
@@ -73,7 +91,6 @@ class FiltroController extends Controller
         }
 
         $Agendado = [];
-        $umovCheca = [];
         $filtroSala = [];
 
        foreach($agendados as $agend){
@@ -115,9 +132,7 @@ class FiltroController extends Controller
         $agen['imagem_cadeira'] = $agend->imagem_cadeira ? $agend->imagem_cadeira : null;
         $agen['observacao'] = $agend->observacao ? $agend->observacao : null;
         $agen['cod_sala'] = $agend->cod_sala ? $agend->cod_sala : null;
-        if($agen['numero_tarefa'] != null && $agen['status_tarefa'] != '50' && $agen['status_tarefa'] != '70'){
-            $umovCheca[] = $agen;
-        }
+        $agen['motivo_umov'] = $agend->motivo_umov ? $agend->motivo_umov : null;
         array_push($Agendado, $agen);
        }
 
@@ -157,10 +172,8 @@ class FiltroController extends Controller
         $at['numero_tarefa'] = $atend->numero_tarefa ? $atend->numero_tarefa : null;
         $at['imagem_cadeira'] = $atend->imagem_cadeira ? $atend->imagem_cadeira : null;
         $at['observacao'] = $atend->observacao ? $atend->observacao : null;
+        $at['cod_sala'] = $atend->cod_sala ? $atend->cod_sala : null;
         $filtro[$atend->codigo_setor_exame] = $at['setor_exame'];
-        if($at['numero_tarefa'] != null){
-            $umovCheca[] = $agen;
-        }
         array_push($Atendimento, $at);
        }
 
@@ -203,10 +216,9 @@ class FiltroController extends Controller
         $p['status_tarefa'] = $pos->status_tarefa ? $pos->status_tarefa : null;
         $p['imagem_cadeira'] = $pos->imagem_cadeira ? $pos->imagem_cadeira : null;
         $p['observacao'] = $pos->observacao ? $pos->observacao : null;
+        $p['motivo_umov'] = $pos->motivo_umov ? $pos->motivo_umov : null;
+        $p['cod_sala'] = $pos->cod_sala ? $pos->cod_sala : null;
         $filtro[$pos->codigo_setor_exame] = $p['setor_exame'];
-        if($p['numero_tarefa'] != null && $p['status_tarefa'] != '50' && $p['status_tarefa'] != '70'){
-            $umovCheca[] = $agen;
-        }
         array_push($posDados, $p);
        }
 
@@ -252,9 +264,6 @@ class FiltroController extends Controller
         $f['observacao'] = $fin->observacao ? $fin->observacao : null;
         $f['cod_sala'] = $fin->cod_sala ? $fin->cod_sala : null;
         $filtro[$fin->codigo_setor_exame] = $f['setor_exame'];
-        if($f['numero_tarefa'] != null && $f['status_tarefa'] != '50' && $f['status_tarefa'] != '70'){
-            $umovCheca[] = $fin;
-        }
         array_push($finDados, $f);
        }
 
@@ -273,7 +282,6 @@ class FiltroController extends Controller
             ],
             'filtro' => $filtro,
             'filtroSala' => $filtroSala,
-            'umovCheca' => $umovCheca
         ];
 
         return response($arrayDados, 200)->header('Retry-After', '3000');

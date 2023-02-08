@@ -121,9 +121,7 @@ class MoinhosController extends Controller
         $agen['imagem_cadeira'] = $agend->imagem_cadeira ? $agend->imagem_cadeira : null;
         $agen['observacao'] = $agend->observacao ? $agend->observacao : null;
         $agen['cod_sala'] = $agend->cod_sala ? $agend->cod_sala : null;
-        if($agen['numero_tarefa'] != null && $agen['status_tarefa'] != '50' && $agen['status_tarefa'] != '70'){
-            $umovCheca[] = $agen;
-        }
+        $agen['motivo_umov'] = $agend->motivo_umov ? $agend->motivo_umov : null;
         array_push($Agendado, $agen);
        }
 
@@ -165,9 +163,6 @@ class MoinhosController extends Controller
         $at['observacao'] = $atend->observacao ? $atend->observacao : null;
         $at['cod_sala'] = $atend->cod_sala ? $atend->cod_sala : null;
         $filtro[$atend->codigo_setor_exame] = $at['setor_exame'];
-        if($at['numero_tarefa'] != null){
-            $umovCheca[] = $agen;
-        }
         array_push($Atendimento, $at);
        }
 
@@ -211,10 +206,8 @@ class MoinhosController extends Controller
         $p['imagem_cadeira'] = $pos->imagem_cadeira ? $pos->imagem_cadeira : null;
         $p['observacao'] = $pos->observacao ? $pos->observacao : null;
         $p['cod_sala'] = $pos->cod_sala ? $pos->cod_sala : null;
+        $p['motivo_umov'] = $pos->motivo_umov ? $pos->motivo_umov : null;
         $filtro[$pos->codigo_setor_exame] = $p['setor_exame'];
-        if($p['numero_tarefa'] != null && $p['status_tarefa'] != '50' && $p['status_tarefa'] != '70'){
-            $umovCheca[] = $pos;
-        }
         array_push($posDados, $p);
        }
 
@@ -259,9 +252,6 @@ class MoinhosController extends Controller
         $f['observacao'] = $fin->observacao ? $fin->observacao : null;
         $f['cod_sala'] = $fin->cod_sala ? $fin->cod_sala : null;
         $filtro[$fin->codigo_setor_exame] = $f['setor_exame'];
-        if($f['numero_tarefa'] != null && $f['status_tarefa'] != '50' && $f['status_tarefa'] != '70'){
-            $umovCheca[] = $fin;
-        }
         array_push($finDados, $f);
        }
 
@@ -281,9 +271,8 @@ class MoinhosController extends Controller
             ],
             'filtro' => $filtro,
             'filtroSala' => $filtroSala,
-            'umovCheca' => $umovCheca
         ];
 
-        return response($arrayDados, 200)->header('Content-Type', 'text/plain');
+        return response($arrayDados, 200);
     }
 }

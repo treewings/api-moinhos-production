@@ -60,8 +60,8 @@ class AgendadoController extends Controller
      public function pegarTarefa(Request $request, $id){
         if($request->origem == 'agendado'){
           $agendado = Agendado::where('acess_number', $id)->first();
-          $agendado->sala = $request->sala;
-          $agendado->cod_sala = $request->cod_sala;
+          $agendado->sala = $request->sala ? $request->sala : $agendado->sala;
+          $agendado->cod_sala = $request->cod_sala ? $request->cod_sala : $agendado->cod_sala;
         }else{
           $agendado = Posexame::where('acess_number', $id)->first();
         }

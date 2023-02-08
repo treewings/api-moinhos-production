@@ -24,6 +24,7 @@ class CreateAgendadosTable extends Migration
             $table->string('sala')->nullable();
             $table->string('status_tarefa')->nullable();
             $table->string('cod_sala')->nullable();
+            $table->string('motivo_umov')->nullable();
             $table->longText('observacao')->nullable();
             $table->longText('observacao_select')->nullable();
             $table->longText('dados');

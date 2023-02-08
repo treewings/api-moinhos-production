@@ -9,6 +9,7 @@ use App\Http\Controllers\DiferencaMoinhosController;
 use App\Http\Controllers\FiltroController;
 use App\Http\Controllers\FinalizadoController;
 use App\Http\Controllers\PosexameController;
+use App\Http\Controllers\umovChecaController;
 use App\Http\Controllers\UsuarioAdministradorController;
 use App\Models\Finalizado;
 
@@ -55,4 +56,13 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     
     
     Route::post('/moinhos/finalizar', [FinalizadoController::class, 'finalizado']);
+
+
+
+    Route::get('/moinhos/checaumov/agendados', [umovChecaController::class, 'dadosAgendado']);
+    Route::get('/moinhos/checaumov/posexame', [umovChecaController::class, 'dadosPos']);
+    Route::post('/moinhos/checaumov/limpar-dados-agendados', [umovChecaController::class, 'atualizarSolocitadosAgendado']);
+    Route::post('/moinhos/checaumov/limpar-dados-posexame', [umovChecaController::class, 'atualizarSolocitadosPos']);
+
+
 });
