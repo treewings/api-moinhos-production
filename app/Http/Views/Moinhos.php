@@ -63,6 +63,7 @@ class Moinhos
         "Cor_classificacao" AS "cor_classificacao",
         "tipo_risco" AS "tip_risco"
         FROM dbahmv.view_exames_3wings
+        WHERE "Data_pedido" >= TRUNC(SYSDATE)
         ';
 
         $stid = oci_parse($banco, $consulta);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AgendarValidation;
+use App\Jobs\SendAgendamentoJob;
 use App\Models\Agendado;
 use App\Models\Atendimento;
 use App\Models\Finalizado;
@@ -17,21 +18,7 @@ class AgendadoController extends Controller
 {
      public function agendar(AgendarValidation $request){
 
-      $responseToken = Http::asForm()->post('https://3wingsservices.hospitalmoinhos.org.br/token', [
-        'grant_type' => 'password',
-        'username' => 'srv.3wings',
-        'password' => 'Wings@1234'
-      ]);
-
-      $moinhosApi = Http::withToken($responseToken->object()->access_token)->post('https://3wingsservices.hospitalmoinhos.org.br/api/ExameAgendado/', [
-      'numeroDeAcesso' => $request->acess_number,
-      'dataAgendamento' => $request->data_agendamento,
-      'horaAgendamento' => $request->hora_agendamento,
-      'status' => "R",
-      'dataHoraMovimentacao' => "",
-      'usuario' => ""
-      ]);
-
+      SendAgendamentoJob::dispatch($request->acess_number, $request->data_agendamento, $request->hora_agendamento, 'R')->onQueue('agendamentos');
       
       $remove = Moinhos::where('acess_number', $request->acess_number)->first();
       if($remove){
@@ -107,20 +94,7 @@ class AgendadoController extends Controller
         if($request->identificacao == 1){
 
           $dados = Agendado::where('acess_number', $request->acess_number)->first();
-          $responseToken = Http::asForm()->post('https://3wingsservices.hospitalmoinhos.org.br/token', [
-            'grant_type' => 'password',
-            'username' => 'srv.3wings',
-            'password' => 'Wings@1234'
-          ]);
-    
-          $moinhosApi = Http::withToken($responseToken->object()->access_token)->post('https://3wingsservices.hospitalmoinhos.org.br/api/ExameAgendado/', [
-          'numeroDeAcesso' => $request->acess_number,
-          'dataAgendamento' => $dados->data_agendamento,
-          'horaAgendamento' => $dados->hora_agendamento,
-          'status' => "C",
-          'dataHoraMovimentacao' => "",
-          'usuario' => ""
-          ]);
+          SendAgendamentoJob::dispatch($request->acess_number, $dados->data_agendamento, $dados->hora_agendamento, 'C')->onQueue('agendamentos');
 
           $dados->delete();
         }
