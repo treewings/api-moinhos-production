@@ -9,6 +9,6 @@ class Moinhos extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['acess_number', 'data', 'dados', 'codigo_setor_exame'];
+    protected $fillable = ['acess_number', 'data', 'dados', 'codigo_setor_exame', 'nome_paciente'];
     protected $dates = ['data'];
 }

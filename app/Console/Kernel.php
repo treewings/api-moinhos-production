@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
                   if($dados != ''){
                       ModelsMoinhos::create([
                           'acess_number' => $dados['acess_number'],
+                          'nome_paciente' => $dados['paciente'],
                           'codigo_setor_exame' => $dados['codigo_setor_exame'],
                           'data' => $dados['hora_pedidoX'],
                           'dados' =>  json_encode($dados)

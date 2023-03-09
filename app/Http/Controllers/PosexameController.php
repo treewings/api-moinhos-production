@@ -15,6 +15,7 @@ class PosexameController extends Controller
         if($atendimento){
          Posexame::create([
              'acess_number' => $atendimento->acess_number,
+             'nome_paciente' => $atendimento->nome_paciente,
              'codigo_setor_exame' => $atendimento->codigo_setor_exame,
              'data_agendamento' => $atendimento->data_agendamento,
              'hora_agendamento' => $atendimento->hora_agendamento,

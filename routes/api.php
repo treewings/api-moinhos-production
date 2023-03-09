@@ -30,10 +30,10 @@ use App\Models\Finalizado;
 
 Route::post('login', [UsuarioAdministradorController::class, 'authenticate']);
 
-
+Route::post('registrar', [UsuarioAdministradorController::class, 'register']);
 Route::group(['middleware' => ['jwt.verify']], function () {
     
-    Route::post('registrar', [UsuarioAdministradorController::class, 'register']);
+    
 
     Route::get('/moinhos', [MoinhosController::class, 'dados']);
     Route::post('/moinhos/consulta', [FiltroController::class, 'consulta']);

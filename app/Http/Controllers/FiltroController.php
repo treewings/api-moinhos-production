@@ -40,6 +40,10 @@ class FiltroController extends Controller
             if($request->has('cod_radiologiaPedriatrica')){
                 $query->orWhere('codigo_setor_exame', $request->get('cod_radiologiaPedriatrica'));
             }
+
+            if($request->has('cod_nome')){
+                $query->orWhere('nome_paciente', 'LIKE', '%' . $request->get('cod_nome') . '%');
+            }
           
             if($request->has('cod_sala')){
                 $query->where('cod_sala', $request->get('cod_sala'));
@@ -50,7 +54,7 @@ class FiltroController extends Controller
         if($request->has('cod_sala')){
             $moinhos = Moinhos::orderBy('data', 'asc')->get();
         }
-        if($request->has('cod_tumografiaComputadorizada') || $request->has('cod_raioX') || $request->has('cod_ecografiaGeral') || $request->has('cod_ressonanciaMagnetica') || $request->has('cod_centroDaMulher') || $request->has('cod_igEcografiaGeral') || $request->has('cod_radiologiaPedriatrica')){
+        if($request->has('cod_tumografiaComputadorizada') || $request->has('cod_raioX') || $request->has('cod_ecografiaGeral') || $request->has('cod_ressonanciaMagnetica') || $request->has('cod_centroDaMulher') || $request->has('cod_igEcografiaGeral') || $request->has('cod_radiologiaPedriatrica') || $request->has('cod_nome')){
             $moinhos = Moinhos::orderBy('data', 'asc')->where($consulta)->get();
         }
         

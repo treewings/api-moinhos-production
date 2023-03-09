@@ -22,8 +22,9 @@ class AgendadoController extends Controller
       
       $remove = Moinhos::where('acess_number', $request->acess_number)->first();
       if($remove){
-        $remove->delete();
+        
          $d = Agendado::create([
+            'nome_paciente' => $remove->nome_paciente,
             'acess_number' => $request->acess_number,
             'codigo_setor_exame' => $request->codigo_setor_exame,
             'data_agendamento' => $request->data_agendamento,
@@ -31,7 +32,7 @@ class AgendadoController extends Controller
             'imagem_cadeira' => $request->imagem_cadeira,
             'dados' => json_encode($request->dados)
         ]);
-
+          $remove->delete();
         Movimentacao::create([
           'user' => $request->user,
           'acess_number' => $request->acess_number,
@@ -84,7 +85,10 @@ class AgendadoController extends Controller
 
      public function agendarCancelar(Request $request){
 
+        $name = Agendado::where('acess_number', $request->acess_number)->first();
+
         Moinhos::create([
+          'nome_paciente' => $name->nome_paciente,
           'acess_number' => $request->acess_number,
           'codigo_setor_exame' => $request->codigo_setor_exame,
           'data' => $request->data,

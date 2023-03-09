@@ -19,6 +19,7 @@ class AtendimentoController extends Controller
 
         Atendimento::create([
             'acess_number' => $request->acess_number,
+            'nome_paciente' => $agendados->nome_paciente,
             'codigo_setor_exame' => $agendados->codigo_setor_exame,
             'data_agendamento' => $agendados->data_agendamento,
             'hora_agendamento' => $agendados->hora_agendamento,

@@ -15,6 +15,7 @@ class FinalizadoController extends Controller
         if($posExame){
          Finalizado::create([
             'acess_number' => $request->acess_number,
+            'nome_paciente' => $posExame->nome_paciente,
             'codigo_setor_exame' => $posExame->codigo_setor_exame,
             'data_agendamento' => $posExame->data_agendamento,
             'hora_agendamento' => $posExame->hora_agendamento,

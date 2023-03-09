@@ -9,5 +9,5 @@ class Agendado extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['acess_number', 'dados', 'codigo_setor_exame', 'data_agendamento', 'hora_agendamento', 'imagem_cadeira', 'observacao', 'observacao_select'];
+    protected $fillable = ['acess_number', 'dados', 'codigo_setor_exame', 'data_agendamento', 'hora_agendamento', 'imagem_cadeira', 'observacao', 'observacao_select', 'nome_paciente'];
 }
